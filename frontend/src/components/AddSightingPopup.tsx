@@ -3,11 +3,14 @@ import { DatePickerInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
 import { IconPlus } from "@tabler/icons-react";
+import { useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useState } from "react";
 import { buildings } from "../constants";
 
 export default function ReportPopup() {
+  const queryClient = useQueryClient();
+
   const [opened, { open, close }] = useDisclosure(false);
   const [submitting, setSubmitting] = useState(false);
 
@@ -53,6 +56,7 @@ export default function ReportPopup() {
               });
 
               if (res.ok) {
+                queryClient.invalidateQueries({ queryKey: ["sightings"] });
                 form.reset();
                 close();
               }

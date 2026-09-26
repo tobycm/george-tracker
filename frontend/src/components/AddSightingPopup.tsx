@@ -47,7 +47,7 @@ export default function ReportPopup() {
                 formData.append("image", values.image);
               }
 
-              const res = await fetch("http://localhost:3000/sightings", {
+              const res = await fetch("/api/sightings", {
                 method: "POST",
                 body: formData,
               });

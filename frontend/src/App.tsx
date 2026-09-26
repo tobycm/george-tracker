@@ -1,4 +1,5 @@
-import { MantineProvider, Stack, Title } from "@mantine/core";
+import { ActionIcon, MantineProvider, Stack, Title } from "@mantine/core";
+import { IconPlus } from "@tabler/icons-react";
 import { Icon } from "leaflet";
 
 import "leaflet/dist/leaflet.css";
@@ -10,7 +11,7 @@ function App() {
   return (
     <MantineProvider>
       <Stack mah="100vh">
-        <Title h={60} ta="center">
+        <Title h={60} ta="center" p="md">
           George Tracker
         </Title>
         <MapContainer center={[48.46312403910019, -123.3121029101059]} zoom={17} style={{ height: "calc(100vh - 60px)", width: "100%" }}>
@@ -25,6 +26,9 @@ function App() {
           </Marker>
         </MapContainer>
       </Stack>
+      <ActionIcon pos="fixed" bottom={10} right={10} style={{ zIndex: 9999 }} size="xl">
+        <IconPlus size={32} />
+      </ActionIcon>
     </MantineProvider>
   );
 }

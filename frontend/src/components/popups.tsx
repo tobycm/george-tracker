@@ -1,9 +1,13 @@
-import { ActionIcon, Modal, Select } from "@mantine/core";
+import { ActionIcon, Modal, Select, TextInput, FileInput } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconPlus } from "@tabler/icons-react";
+import { useState } from 'react';
+import { DatePickerInput } from '@mantine/dates';
+import dayjs from 'dayjs';
 
 export default function ReportPopup() {
   const [opened, { open, close }] = useDisclosure(false);
+  const [value, setValue] = useState<string | null>(null);
 
   return (
     <>
@@ -13,8 +17,9 @@ export default function ReportPopup() {
 
       <Modal opened={opened} onClose={close} title="Report sighting">
         <Select
-          label="Location:"
+          label="Location (pick nearest):"
           placeholder="Pick value"
+          searchable
           data={[
             "Bob Wright Centre",
             "Business & Economics Building",
@@ -68,6 +73,28 @@ export default function ReportPopup() {
             "Visual Arts Building",
           ]}
         />
+
+        <DatePickerInput
+          label="Date:"
+          value={value}
+          onChange={setValue}
+          firstDayOfWeek={0}
+          maxDate={dayjs().format('YYYY-MM-DD')}
+        />
+
+        <TextInput
+          label="Comment (optional):"
+          placeholder="Type a comment here"
+        />
+
+        <FileInput 
+          accept="image/png,image/jpeg,image/tiff,image/bmp,heif" 
+          label="Upload a photo (optional):" 
+          name="file" 
+        />
+
+        <button type="submit">Submit</button>
+
       </Modal>
     </>
   );

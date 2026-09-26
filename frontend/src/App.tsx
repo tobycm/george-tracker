@@ -43,7 +43,13 @@ function App() {
         </Title>
         <ScrollArea h={40} w="100vw">
           <Group h="100%" wrap="nowrap" px="md">
-            <FilterPill label="All" filter={(sightings) => setFilteredSightings(sightings)} />
+            <FilterPill
+              label="All"
+              filter={(sightings) => {
+                setFilteredSightings(sightings);
+                setActiveFilter("All");
+              }}
+            />
             <FilterPill
               label="Today"
               filter={(sightings) => {

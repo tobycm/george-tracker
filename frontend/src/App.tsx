@@ -1,11 +1,10 @@
 import { MantineProvider, Stack, Title } from "@mantine/core";
-import { Icon } from "leaflet";
 
 import "leaflet/dist/leaflet.css";
-import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import { MapContainer, TileLayer } from "react-leaflet";
 
-import peacock from "./assets/noun_Peacock_7981682.svg";
-import ReportPopup from "./components/popups";
+import ReportPopup from "./components/ReportPopup";
+import ViewReportPopup from "./components/ViewReportPopup";
 
 function App() {
   return (
@@ -19,11 +18,7 @@ function App() {
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          <Marker position={[48.46312403910019, -123.3121029101059]} icon={new Icon({ iconUrl: peacock, iconSize: [72, 72] })}>
-            <Popup>
-              A pretty CSS3 popup. <br /> Easily customizable.
-            </Popup>
-          </Marker>
+          <ViewReportPopup></ViewReportPopup>
         </MapContainer>
       </Stack>
       <ReportPopup></ReportPopup>

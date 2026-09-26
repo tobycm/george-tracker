@@ -31,7 +31,7 @@ export default function ReportPopup() {
             "Cluster Housing",
             "Continuing Studies Building",
             "Cornett Building",
-            "Craigdarroch Office Building",
+            "Craigdarroch Office Building (Residence Services)",
             "Craigdarroch Residences",
             "Cunningham Building",
             "David Strong Building",

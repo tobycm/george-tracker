@@ -6,12 +6,10 @@ import { IconPlus } from "@tabler/icons-react";
 import dayjs from "dayjs";
 import { useState } from "react";
 import { buildings } from "../constants";
-import { useAppState } from "../states/app";
 
 export default function ReportPopup() {
   const [opened, { open, close }] = useDisclosure(false);
   const [submitting, setSubmitting] = useState(false);
-  const { setSightings } = useAppState();
 
   const form = useForm<{
     location: string;

@@ -6,9 +6,11 @@ const db = new sqlite3.Database('./db/george_sightings.db', sqlite3.OPEN_READWRI
     if (err) return console.error(err.message);
 })
 // create table: location, date, time, notes, image
-// sql = 'CREATE TABLE users(id INTEGER PRIMARY KEY, location, date, notes, image)';
-// db.run(sql);
-
+function createTable() {
+    sql = 'CREATE TABLE users(id INTEGER PRIMARY KEY, location, date, notes, image)';
+    db.run(sql);
+}
+//createTable();
 // drop table
 // db.run('DROP TABLE users');
 
@@ -29,6 +31,7 @@ function newSighting(location, date, notes, image) {
         }
     )
 }
+//newSighting('Cornett', 'May 18 2007', 'n/a', 'imagelink');
 
 function getSightings() {
     sql = 'SELECT * FROM users';
@@ -39,25 +42,23 @@ function getSightings() {
         })
     })
 }
-newSighting('Cornett', 'May 18 2007', 'n/a', 'imagelink');
-// update data
-// sql = 'UPDATE users SET location = ? WHERE id = ?';
-// db.run(sql, ['Jake', 1], (err) => {
-//     if (err) return console.error(err.message);
-// })
+function getSighting(id) {
+    sql = 'SELECT * FROM users WHERE id = ?';
+    db.get(sql, [id], (err, row) => {
+        if (err) return console.error(err.message);
+        console.log(row);
+    })
+}
+//getSightings();
+//getSighting(1);
+
 
 // delete data
-// sql = 'DELETE FROM users WHERE id = ?';
-// db.run(sql, [1], (err) => {
-//     if (err) return console.error(err.message);
-// })
-
-
-// query the database
-// sql = 'SELECT * FROM users';
-// db.all(sql, [], (err, rows) => {
-//     if (err) return console.error(err.message);
-//     rows.forEach((row) => {
-//         console.log(row);
-//     })
-// });
+function deleteSighting(id) {
+    sql = 'DELETE FROM users WHERE id = ?';
+    db.run(sql, [id], (err) => {
+        if (err) return console.error(err.message);
+    })
+}
+// deleteSighting(1);
+// getSightings();

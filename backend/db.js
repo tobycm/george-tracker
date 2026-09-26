@@ -1,53 +1,58 @@
+import Database from "better-sqlite3";
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
-const sqlite3 = require('sqlite3').verbose();
-let sql;
-//connect to DB
-const db = new sqlite3.Database('./db/george_sightings.db', sqlite3.OPEN_READWRITE, (err) => {
-    if (err) return console.error(err.message);
-})
-// create table: location, date, time, notes, image
-// sql = 'CREATE TABLE users(id INTEGER PRIMARY KEY, location, date, time, notes, image)';
-// db.run(sql);
-
-// drop table
-//db.run('DROP TABLE users');
-
-// insert data into database
-// sql = `INSERT INTO users(location, date, time, notes, image) VALUES(?,?,?,?,?)`;
-// db.run(sql, 
-//     ['Cornett', 'May 18 2007', '18:00', 'n/a', 'imagelink'], 
-//     (err) => {
-//         if (err) return console.error(err.message);
-//     }
-// )
-function newSighting(location, date, time, notes, image) {
-    sql = `INSERT INTO users(location, date, time, notes, image) VALUES(?,?,?,?,?)`;
-    db.run(sql,
-        [location, date, time, notes, image],
-        (err) => {
-            if (err) return console.error(err.message);
-        }
-    )
+// create database folder if not exists
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const dbDir = path.join(__dirname, "db");
+if (!fs.existsSync(dbDir)) {
+  fs.mkdirSync(dbDir, { recursive: true });
 }
 
-// update data
-// sql = 'UPDATE users SET location = ? WHERE id = ?';
-// db.run(sql, ['Jake', 1], (err) => {
-//     if (err) return console.error(err.message);
-// })
+// hi lily i switched from sqlite3 to better-sqlite3
+// it should be very similar with less code
 
-// delete data
-// sql = 'DELETE FROM users WHERE id = ?';
-// db.run(sql, [1], (err) => {
-//     if (err) return console.error(err.message);
-// })
+const db = new Database(path.join(dbDir, "george_sightings.db"));
 
+// create table: location, date, time, notes, image
+export function createTable() {
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS users (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      location TEXT,
+      date TEXT,
+      notes TEXT,
+      image TEXT
+    )
+  `);
+}
+
+// insert data into database
+export function newSighting(location, date, notes, image) {
+  const stmt = db.prepare("INSERT INTO users (location, date, notes, image) VALUES (?, ?, ?, ?)");
+  const info = stmt.run(location, date, notes, image);
+  return {
+    id: Number(info.lastInsertRowid),
+    location,
+    date,
+    notes,
+    image,
+  };
+}
 
 // query the database
-// sql = 'SELECT * FROM users';
-// db.all(sql, [], (err, rows) => {
-//     if (err) return console.error(err.message);
-//     rows.forEach((row) => {
-//         console.log(row);
-//     })
-// });
+export function getSightings() {
+  return db.prepare("SELECT * FROM users ORDER BY id DESC").all();
+}
+
+export function getSighting(id) {
+  return db.prepare("SELECT * FROM users WHERE id = ?").get(id);
+}
+
+// delete data
+export function deleteSighting(id) {
+  const stmt = db.prepare("DELETE FROM users WHERE id = ?");
+  const info = stmt.run(id);
+  return { changes: info.changes };
+}

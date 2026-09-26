@@ -1,64 +1,45 @@
+// Start HTTP server in Node.js environment
+const port = Number(process.env.PORT) || 3000;
 
-const sqlite3 = require('sqlite3').verbose();
-let sql;
-//connect to DB
-const db = new sqlite3.Database('./db/george_sightings.db', sqlite3.OPEN_READWRITE, (err) => {
-    if (err) return console.error(err.message);
-})
-// create table: location, date, time, notes, image
-function createTable() {
-    sql = 'CREATE TABLE users(id INTEGER PRIMARY KEY, location, date, notes, image)';
-    db.run(sql);
-}
-//createTable();
-// drop table
-// db.run('DROP TABLE users');
+if (typeof process !== "undefined" && process.versions?.node && !process.versions?.bun) {
+  try {
+    const { serve } = await import("@hono/node-server");
+    serve({ fetch: app.fetch, port }, () => {
+      console.log(`Server running at http://localhost:${port}`);
+    });
+  } catch {
+    const { createServer } = await import("node:http");
+    const server = createServer(async (req, res) => {
+      try {
+        const url = `http://${req.headers.host || "localhost"}${req.url}`;
+        const request = new Request(url, {
+          method: req.method,
+          headers: req.headers,
+          body: req.method !== "GET" && req.method !== "HEAD" ? req : undefined,
+          duplex: "half",
+        });
 
-// insert data into database
-// sql = `INSERT INTO users(location, date, time, notes, image) VALUES(?,?,?,?,?)`;
-// db.run(sql, 
-//     ['Cornett', 'May 18 2007', '18:00', 'n/a', 'imagelink'], 
-//     (err) => {
-//         if (err) return console.error(err.message);
-//     }
-// )
-function newSighting(location, date, notes, image) {
-    sql = `INSERT INTO users(location, date, notes, image) VALUES(?,?,?,?)`;
-    db.run(sql,
-        [location, date, notes, image],
-        (err) => {
-            if (err) return console.error(err.message);
+        const response = await app.fetch(request);
+        res.statusCode = response.status;
+        response.headers.forEach((val, key) => res.setHeader(key, val));
+
+        if (response.body) {
+          const reader = response.body.getReader();
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            res.write(value);
+          }
         }
-    )
-}
-//newSighting('Cornett', 'May 18 2007', 'n/a', 'imagelink');
+        res.end();
+      } catch (e) {
+        res.statusCode = 500;
+        res.end(e?.message || "Internal Server Error");
+      }
+    });
 
-function getSightings() {
-    sql = 'SELECT * FROM users';
-    db.all(sql, [], (err, rows) => {
-        if (err) return console.error(err.message);
-        rows.forEach((row) => {
-            console.log(row);
-        })
-    })
+    server.listen(port, () => {
+      console.log(`Server running at http://localhost:${port}`);
+    });
+  }
 }
-function getSighting(id) {
-    sql = 'SELECT * FROM users WHERE id = ?';
-    db.get(sql, [id], (err, row) => {
-        if (err) return console.error(err.message);
-        console.log(row);
-    })
-}
-//getSightings();
-//getSighting(1);
-
-
-// delete data
-function deleteSighting(id) {
-    sql = 'DELETE FROM users WHERE id = ?';
-    db.run(sql, [id], (err) => {
-        if (err) return console.error(err.message);
-    })
-}
-// deleteSighting(1);
-// getSightings();

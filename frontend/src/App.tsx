@@ -6,6 +6,7 @@ import "leaflet/dist/leaflet.css";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 
 import peacock from "./assets/noun_Peacock_7981682.svg";
+import ReportPopup from "./components/popups";
 
 function App() {
   return (
@@ -26,9 +27,7 @@ function App() {
           </Marker>
         </MapContainer>
       </Stack>
-      <ActionIcon pos="fixed" bottom={10} right={10} style={{ zIndex: 9999 }} size="xl">
-        <IconPlus size={32} />
-      </ActionIcon>
+      <ReportPopup></ReportPopup>
     </MantineProvider>
   );
 }

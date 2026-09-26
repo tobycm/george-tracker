@@ -1,16 +1,32 @@
-import { AppShell, MantineProvider } from "@mantine/core"
+import { MantineProvider, Stack, Title } from "@mantine/core";
+import { Icon } from "leaflet";
+
+import "leaflet/dist/leaflet.css";
+import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+
+import peacock from "./assets/noun_Peacock_7981682.svg";
 
 function App() {
-
   return (
     <MantineProvider>
-      <AppShell >
-        <AppShell.Header >
-
-        </AppShell.Header>
-      </AppShell>
+      <Stack mah="100vh">
+        <Title h={60} ta="center">
+          George Tracker
+        </Title>
+        <MapContainer center={[48.46312403910019, -123.3121029101059]} zoom={17} style={{ height: "calc(100vh - 60px)", width: "100%" }}>
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          <Marker position={[48.46312403910019, -123.3121029101059]} icon={new Icon({ iconUrl: peacock, iconSize: [72, 72] })}>
+            <Popup>
+              A pretty CSS3 popup. <br /> Easily customizable.
+            </Popup>
+          </Marker>
+        </MapContainer>
+      </Stack>
     </MantineProvider>
-  )
+  );
 }
 
-export default App
+export default App;

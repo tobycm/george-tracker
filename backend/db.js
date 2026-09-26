@@ -29,15 +29,15 @@ export function createTable() {
 }
 
 // insert data into database
-export function newSighting(location, date, notes, image) {
+export function newSighting(location, date, notes, image = null) {
   const stmt = db.prepare("INSERT INTO users (location, date, notes, image) VALUES (?, ?, ?, ?)");
-  const info = stmt.run(location, date, notes, image);
+  const info = stmt.run(location, date, notes, image ?? null);
   return {
     id: Number(info.lastInsertRowid),
     location,
     date,
     notes,
-    image,
+    image: image ?? null,
   };
 }
 

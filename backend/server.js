@@ -107,8 +107,13 @@ app.post("/sightings", async (c) => {
 
     let imagePath = null;
 
-    // Handle file upload if image is a File / Blob object
-    if (image && typeof image === "object" && typeof image.arrayBuffer === "function") {
+    // Handle file upload if image is a File / Blob object with content
+    if (
+      image &&
+      typeof image === "object" &&
+      typeof image.arrayBuffer === "function" &&
+      image.size > 0
+    ) {
       const originalName = image.name || "sighting.jpg";
       const ext = path.extname(originalName) || ".jpg";
       const uniqueName = `sighting-${Date.now()}-${Math.round(Math.random() * 1e9)}${ext}`;

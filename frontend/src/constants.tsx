@@ -1,4 +1,6 @@
-export const buildings = {
+import type { LatLngTuple } from "leaflet";
+
+export const buildings: Record<string, LatLngTuple> = {
   "Bob Wright Centre": [48.46212783547502, -123.30882280668756],
   "Business & Economics Building": [48.46527958757824, -123.31325834289646],
   CARSA: [48.46774649930157, -123.31097872295473],
@@ -49,4 +51,4 @@ export const buildings = {
   "University Club": [48.46394801476586, -123.31732044060654],
   "University House 1/2/3/4/5": [48.46226831988057, -123.30296815186804],
   "Visual Arts Building": [48.46222327272799, -123.31814660337646],
-} as const;
+};

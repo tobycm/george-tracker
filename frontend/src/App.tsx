@@ -103,7 +103,7 @@ function App() {
               <Popup>
                 <Text>{sighting.notes}</Text>
                 <Text>{sighting.date}</Text>
-                {sighting.image && <Image src={"/api" + sighting.image} alt="Sighting" />}
+                {sighting.image && <Image src={"/api" + sighting.image} alt="Sighting" h={200} w="auto" />}
               </Popup>
             </Marker>
           ))}

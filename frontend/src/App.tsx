@@ -1,4 +1,4 @@
-import { Group, Image, ScrollArea, Stack, Text, Title } from "@mantine/core";
+import { Anchor, Group, Image, ScrollArea, Stack, Text, Title } from "@mantine/core";
 
 import "leaflet/dist/leaflet.css";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
@@ -13,6 +13,7 @@ import FirstOpen from "./components/FirstOpen";
 import { buildings } from "./constants";
 import { useAppState } from "./states/app";
 
+import { IconBrandGithub } from "@tabler/icons-react";
 import { Icon } from "leaflet";
 import peacock from "./assets/noun_Peacock_7981682.svg";
 import FilterPill from "./components/FilterPill";
@@ -37,10 +38,16 @@ function App() {
 
   return (
     <>
+      <Anchor href="https://github.com/tobycm/george-tracker" target="_blank" rel="noopener noreferrer" pos="fixed" top={16} right={16}>
+        <IconBrandGithub color="white" size={32} />
+      </Anchor>
+
       <Stack mah="100vh" bg="#096C6C" c="white">
-        <Title h={60} ta="center" p="md">
-          George Tracker
-        </Title>
+        <Group align="center" justify="center">
+          <Title h={60} ta="center" p="md">
+            George Tracker
+          </Title>
+        </Group>
         <ScrollArea h={40} w="100vw">
           <Group h="100%" wrap="nowrap" px="md">
             <FilterPill

@@ -6,7 +6,7 @@ type Filters = "All" | "Today" | "This Week" | "This Month" | "Past 4 Months" | 
 const initial = {
   sightings: [] as Sighting[],
   filteredSightings: [] as Sighting[],
-  activeFilter: "Past 4 Months" as Filters,
+  activeFilter: "All" as Filters,
 };
 
 type AppState = typeof initial & {
